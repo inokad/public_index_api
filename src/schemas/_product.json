@@ -1,0 +1,483 @@
+
+{
+  "$id": "_product.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "url",
+    "skus"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50,
+      "errorMessage": "id should be a string (minLength=1, maxLength=50)"
+    },
+    "relatedIds": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 1000,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 50
+      },
+      "errorMessage": "relatedIds should be an array of strings (minItems=1, maxItems=1000, minLength=1, maxLength=50)"
+    },
+    "sortOrder": {
+      "type": "integer"
+    },
+    "arrivalDateTs": {
+      "type": "integer"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri-reference",
+      "minLength": 1,
+      "maxLength": 500,
+      "errorMessage": "url should be a string (minLength=1, maxLength=500) and should conform to valid URI format"
+    },
+    "slug": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "errorMessage": "slug should be a string (minLength=1, maxLength=200)"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "errorMessage": "name should be a string (minLength=1, maxLength=200)"
+    },
+    "brand": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "errorMessage": "brand should be a string (minLength=1, maxLength=100)"
+    },
+    "categories": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "errorMessage": "categories should be an array of strings (minItems=1, maxItems=100, minLength=1, maxLength=100)"
+    },
+    "collections": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "errorMessage": "collections should be an array of strings (minItems=1, maxItems=100, minLength=1, maxLength=100)"
+    },
+    "customUserData": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-z][a-zA-Z0-9]{0,30}$": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 30,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "errorMessage": "customUserData values should be array of strings (minItems=1, maxItems=30, minLength=1, maxLength=100)"    
+        }
+      }
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "Men",
+        "Women",
+        "Unisex"
+      ],
+      "errorMessage": "gender should be a string (allowed_values=Men|Women|Unisex)"
+    },
+    "ageGroup": {
+      "type": "string",
+      "enum": [
+        "Adults",
+        "Teens",
+        "Kids"
+      ],
+      "errorMessage": "ageGroup should be a string (allowed_values=Adults|Teens|Kids)"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000,
+      "errorMessage": "description should be a string (minLength=1,maxLength=10000)"
+    },
+    "features": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 50,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      },
+      "errorMessage": "features should be an array of strings (minItems=1, maxItems=50, minLength=1, maxLength=2000)"
+    },
+    "customUserTags": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100,
+        "pattern": "[a-zA-Z0-9_]+:.+"
+      },
+      "errorMessage": "customUserTags should be an array of strings (minItems=1,maxItems=200,minLength=1,maxLength=100) and should conform to 'tagType:tag' format"
+    },
+    "tags": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100,
+        "pattern": "[a-zA-Z0-9_]+:.+"
+      },
+      "errorMessage": "tags should be an array of strings (minItems=1,maxItems=200,minLength=1,maxLength=100) and should conform to 'tagType:tag' format"
+    },
+    "skus": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "price"
+        ],
+        "properties": {
+          "price": {
+            "type": "number",
+            "minimum": 0
+          },
+          "promoPrice": {
+            "type": "number",
+            "minimum": 0
+          },
+          "variationId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "size": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "initialPrice": {
+            "type": "number",
+            "minimum": 0
+          },
+          "estimatedRetailPrice": {
+            "type": "number",
+            "minimum": 0
+          },
+          "inventoryQuantity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "availability": {
+            "type": "string",
+            "enum": [
+              "Discontinued",
+              "InStock",
+              "InStoreOnly",
+              "LimitedAvailability",
+              "OnlineOnly",
+              "OutOfStock",
+              "PreOrder",
+              "PreSale",
+              "SoldOut",
+              "OutOfStockPurchasable"
+            ]
+          },
+          "condition": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "tags": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "pattern": "[a-zA-Z0-9_]+:.+"
+            }
+          }
+        }
+      },
+      "errorMessage": "skus should be an array of valid productSku objects (minItems=1, maxItems=200). and should conform to 'tagType:tag' format. Please refer API documentation for more info."
+    },
+    "media": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 150,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri-reference",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "highResUrl": {
+            "type": "string",
+            "format": "uri-reference",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "altText": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "variationId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          }
+        }
+      },
+      "errorMessage": "media should be an array of valid media objects (minItems=1, maxItems=150). Please refer API documentation for more info."
+    },
+    "variations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "productId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50,
+            "errorMessage": "productId should be a string (minLength=1, maxLength=50)"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "swatch": {
+            "type": "string",
+            "format": "uri-reference",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "url": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "productName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "relatedIds": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 300,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50
+            },
+            "errorMessage": "relatedIds should be an array of strings (minItems=1, maxItems=300, minLength=1, maxLength=50)"
+          }
+        }
+      },
+      "errorMessage": "variations should be an array of valid color objects (minItems=1, maxItems=50). Please refer API documentation for more info."
+    },
+    "fitInformation": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "errorMessage": "fitInformation should be an array of strings (minItems=1, maxItems=20, minLength=1, maxLength=200)"
+    },
+    "popularity": {
+      "type": "object",
+      "required": [
+        "type", "data"
+      ],
+      "properties": {
+        "type": {
+          "enum": [ "STAR", "LIKES", "THUMBS" ]
+        }
+      },
+      "if": {
+        "properties": {
+          "type": {
+            "enum": [ "STAR" ]
+          }
+        }
+      },
+      "then": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "enum": [ "STAR" ]
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "overallRating",
+              "maxRating",
+              "reviewCount"
+            ],
+            "properties": {
+              "overallRating": {
+                "type": "number",
+                "minimum": 0
+              },
+              "maxRating": {
+                "type": "number",
+                "minimum": 0
+              },
+              "reviewCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "ratingSummary": {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 10,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "rating",
+                    "count"
+                  ],
+                  "properties": {
+                    "rating": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "count": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  }
+                },
+                "errorMessage": "ratingSummary should be an array of summary objects (minItems=0, maxItems=10)"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "if": {
+          "properties": {
+            "type": {
+              "enum": [ "LIKES" ]
+            }
+          }
+        },
+        "then": {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "enum": [ "LIKES" ]
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "favLikeCount"
+              ],
+              "properties": {
+                "favLikeCount": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        },
+        "else": {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [ "THUMBS" ]
+              }
+            }
+          },
+          "then": {
+            "additionalProperties": false,
+            "properties":{
+              "type": {
+                "enum": [ "THUMBS" ]
+              },
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "thumbsUpCount",
+                  "thumbsDownCount"
+                ],
+                "properties": {
+                  "thumbsUpCount": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "thumbsDownCount": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

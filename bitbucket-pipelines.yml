@@ -1,0 +1,47 @@
+# Check our guides at https://confluence.atlassian.com/x/14UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: node
+
+pipelines:
+  default:
+    - parallel:
+        - step: 
+            name: Build
+            caches:
+              - api-node
+            script:
+              - rm -rf tmp_api_artifacts
+              - mkdir -p ./tmp_api_artifacts
+              - mv ./src                              ./tmp_api_artifacts/src
+              - mv ./ecosystem.config.js              ./tmp_api_artifacts/ecosystem.config.js
+              - mv ./scripts                          ./tmp_api_artifacts/scripts
+              - mv ./appspec.yml                      ./tmp_api_artifacts/appspec.yml 
+              - mv ./server.js                        ./tmp_api_artifacts/server.js 
+              - mv ./indexer.js                        ./tmp_api_artifacts/indexer.js 
+              - mv ./package-lock.json                ./tmp_api_artifacts/package-lock.json
+              - mv ./package.json                     ./tmp_api_artifacts/package.json 
+            artifacts:
+              - tmp_api_artifacts/**
+
+    - step:
+        # set AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION as environment variables
+        name: Push to S3
+        # trigger: manual  # uncomment to have a manual step
+        image: atlassian/pipelines-awscli
+        script:
+          - aws deploy push --application-name $CODEDEPLOY_APP_NAME --s3-location s3://deployments/public_index_api_build_$BITBUCKET_BUILD_NUMBER.zip --ignore-hidden-files --source ./tmp_api_artifacts/
+ 
+    - step:
+        name: Deploy to Sandbox
+        trigger: manual
+        deployment: staging # set to test, staging or production
+        image: atlassian/pipelines-awscli
+        script:
+          - aws deploy create-deployment --ignore-application-stop-failures --application-name $CODEDEPLOY_APP_NAME --s3-location bucket=deployments,key=public_index_api_build_$BITBUCKET_BUILD_NUMBER.zip,bundleType=zip --deployment-group-name sandbox
+
+definitions:
+  caches:
+    api-node: node_modules
+
